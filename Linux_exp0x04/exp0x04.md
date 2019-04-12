@@ -95,3 +95,24 @@ bash ImageProcess.sh -f /workspace/shell/test.jpg -ctj
   -fs             分别统计不同4XX状态码对应的TOP 10 URL和对应出现的总次数
   -h,  --help"
   ```
+
+
+
+#### 参考资料
+
+- [Linux-2017-FitBC](<https://github.com/FitzBC/linux/tree/0636a22f94a388f3869d799cdc7c22cd693ed214/2017-1/FitzBC/%E5%AE%9E%E9%AA%8C4>)
+
+- [extract-filename-and-extension-in-bash](http://stackoverflow.com/questions/965053/extract-filename-and-extension-in-bash)
+- [resize-convert](https://www.howtogeek.com/109369/how-to-quickly-resize-convert-modify-images-from-the-linux-terminal/)
+- [check-if-a-program-exists](https://stackoverflow.com/questions/592620/how-to-check-if-a-program-exists-from-a-bash-script)
+- [easy-watermarking-imagemagick](https://www.linuxjournal.com/content/easy-watermarking-imagemagick)
+- [compress-images](https://askubuntu.com/questions/781497/how-can-i-compress-images)
+- [get-information-about-an-image-picture](https://superuser.com/questions/275502/how-to-get-information-about-an-image-picture-from-the-linux-command-line)
+- [takes-optional-input-arguments](https://stackoverflow.com/questions/9332802/how-to-write-a-bash-script-that-takes-optional-input-arguments)
+- [linuxcommand](http://linuxcommand.org/lc3_wss0120.php)
+- [validating-ip-address-bash-script](https://www.linuxjournal.com/content/validating-ip-address-bash-script)
+- [get-the-char-at-a-given-position-of-a-string](<https://unix.stackexchange.com/questions/9468/how-to-get-the-char-at-a-given-position-of-a-string-in-shell-script>)
+- [get-the-list-of-files-in-a-directory](<https://stackoverflow.com/questions/2437452/how-to-get-the-list-of-files-in-a-directory-in-a-shell-script>)
+- [sed](<http://man.linuxde.net/sed>)
+- [removing-all-spaces-tabs-newlines-etc-from-a-variable](<https://unix.stackexchange.com/questions/32569/removing-all-spaces-tabs-newlines-etc-from-a-variable>)
+
