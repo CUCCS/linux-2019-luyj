@@ -6,12 +6,41 @@ before_install:
     - sudo apt-get update -q
     - export scversion="stable" # or "v0.4.7", or "latest"
     - wget "https://storage.googleapis.com/shellcheck/shellcheck-${scversion}.linux.x86_64.tar.xz"
+    - wget "https://media.githubusercontent.com/media/CUCCS/linux-2019-jckling/0x04/0x04/Codes/worldcupplayerinfo.tsv"
+    - wget "https://media.githubusercontent.com/media/CUCCS/linux-2019-jckling/0x04/0x04/Codes/web_log.tsv"
+    - wget "https://raw.githubusercontent.com/luyj/travis-ci-code/Linux_exp0x04/Linux_exp0x04_code/test.jpg.jpg"
     - tar --xz -xvf shellcheck-"${scversion}".linux.x86_64.tar.xz
     - sudo cp shellcheck-"${scversion}"/shellcheck /usr/bin/
     - /usr/bin/shellcheck --version
+    - sudo apt install 
 
 script:
   - bash test.sh
+  - bash Linux_exp0x04_code/ImageProcess.sh
+  - bash Linux_exp0x04_code/ImageProcess.sh -h
+  - bash Linux_exp0x04_code/ImageProcess.sh -f test.jpg.jpg -cq 20
+  - bash Linux_exp0x04_code/ImageProcess.sh -f test.jpg.jpg -cs 50
+  - bash Linux_exp0x04_code/ImageProcess.sh -f test.jpg.jpg -ctj
+  - bash Linux_exp0x04_code/ImageProcess.sh -f test.jpg.jpg -tw testwatermark
+  - bash Linux_exp0x04_code/ImageProcess.sh -f test.jpg.jpg -sr _suf
+  - bash Linux_exp0x04_code/ImageProcess.sh -f test.jpg.jpg -pr _pre
+  - bash Linux_exp0x04_code/ImageProcess.sh bp
+
+  - bash Linux_exp0x04_code/WorldCupPlayerInfo.sh -h
+
+  
+  - bash Linux_exp0x04_code/WebLog.sh
+  - bash Linux_exp0x04_code/WebLog.sh -h
+  - bash Linux_exp0x04_code/WebLog.sh -sh
+  - bash Linux_exp0x04_code/WebLog.sh -si
+  - bash Linux_exp0x04_code/WebLog.sh -sc
+  - bash Linux_exp0x04_code/WebLog.sh -u
+  - bash Linux_exp0x04_code/WebLog.sh -uh "uplherc.upl.com"
+  - bash Linux_exp0x04_code/WebLog.sh -fs
+  - bash Linux_exp0x04_code/WorldCupPlayerInfo.sh
+
+  
+
 
 after_script:
   - /usr/bin/shellcheck test.sh
