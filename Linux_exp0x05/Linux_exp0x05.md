@@ -8,7 +8,7 @@
 ### 实验环境搭建
 #### 安装```VeryNginx```
 - 安装```git```
-    ```
+    ```bash
     sudo apt-get update
     sudo apt install git
 
@@ -16,23 +16,23 @@
     git config --global user.email "youremail@domain.com"
     ```
 - 将```VeryNgnx```仓库克隆到本地
-    ```
+    ```bash
     git clone https://github.com/alexazhou/VeryNginx.git
 - 进入本地```VeryNginx```仓库，执行```install.py```
-    ```
+    ```bash
     sudo python install.py install
     ```
     - 根据报错添加依赖
-    ```
+    ```bash
     sudo apt-get update
     sudo apt install libssl libssl1.0-dev
     apt install libpcre3 libpcre3-dev
     sudo apt install zlib1g-dev
     ```
-- 修改```/opt/verynginx/openresty/nginx/conf/nginx.conf```文件配置,将server模块监听端口改为8087
+- 修改[/opt/verynginx/openresty/nginx/conf/nginx.conf](nginx.conf)文件配置,将server模块监听端口改为8087
 - 修改主机hosts文件,添加```192.168.56.101 vn.sec.cuc.edu.cn```
 - 相关命令
-    ```
+    ```bash
     #启动服务
     /opt/verynginx/openresty/nginx/sbin/nginx
 
@@ -48,7 +48,7 @@
         ![](vn_start.PNG)
     
 #### 安装```Nginx```
-```
+```bash
 sudo apt update
 sudo apt install nginx
 ```
@@ -59,30 +59,30 @@ sudo apt install nginx
 
 ##### Mysql
 - 创建```WordPress```独立数据库
-    ```
+    ```sql
     CREATE DATABASE wordpress DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
     ```
 - 创建账户，设置密码
-    ```
+    ```sql
     GRANT ALL ON wordpress.* TO 'wordpressuser'@'localhost' IDENTIFIED BY 'password';
     ```
 - 刷新更改
-    ```
+    ```bash
     FLUSH PRIVILEGES;
     ```
 ##### PHP
 - 安装相关拓展
-    ```
+    ```bash
     sudo apt update
     sudo apt install php-curl php-gd php-intl php-mbstring php-soap php-xml php-xmlrpc php-zip
     ```
 - 重启```php7.2-fpm```
-    ```
+    ```bash
     sudo systemctl restart php7.2-fpm
     ```
 
 ##### WordPress下载
-```
+```bash
 cd /tmp
 # 将安装包下载至临时目录
 curl -LO https://wordpress.org/wordpress-4.7.tar.gz
@@ -104,8 +104,8 @@ tar xzvf wordpress-4.7.tar.gz
 ##### Nginx配置
 - 实现使用Ip地址访问wordpress
     - 修改```wp-config.php```,更新数据库相关信息
-    - 为```wordpress```创建配置文件```/etc/nginx/sites-available/wp.sec.cuc.edu.cn```
-        ```
+    - 为```wordpress```创建配置文件[/etc/nginx/sites-available/wp.sec.cuc.edu.cn](wp.sec.cuc.edu.cn)
+        ```bash
         server {
             listen 8080;
             listen [::]:8080 ipv6only=on;
@@ -132,11 +132,11 @@ tar xzvf wordpress-4.7.tar.gz
         }
         ```
     - 创建软链接
-        ```
+        ```bash
         sudo ln -s /etc/nginx/sites-available/wp.sec.cuc.edu.cn /etc/nginx/sites-enabled/
         ```
     - 重启nginx
-        ```
+        ```bash
         sudo systemctl restart nginx
         ```
     - ```http://192.168.56.101:8080```访问
@@ -154,7 +154,7 @@ tar xzvf wordpress-4.7.tar.gz
 - [How to Install and Configure DVWA Lab on Ubuntu 18.04 server](https://kifarunix.com/how-to-setup-damn-vulnerable-web-app-lab-on-ubuntu-18-04-server/)
 
 ###### 下载DVWA
- ```
+ ```bash
 
 # 在/var/www/html下为DVWA创建目录
 sudo mkdir /var/www/html/DVWA
@@ -168,11 +168,11 @@ sudo rsync -avP /tmp/DVWA/ /var/www/html/DVWA
 ##### 配置DVWA
 - 数据库配置
     - 复制```config.inc.php.dist```到```config.inc.php```
-        ```
+        ```bash
         cp /var/www/html/DVWA/config/config.inc.php.dist /var/www/html/DVWA/config/config.inc.php
         ```
     - 在mysql中为DVWA新建用户名
-        ```
+        ```sql
         # 新建数据库dvwa
         CREATE DATABASE dvwa DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
@@ -190,7 +190,7 @@ sudo rsync -avP /tmp/DVWA/ /var/www/html/DVWA
         ```
 
     - 修改DVWA文件配置
-        ```
+        ```bash
         sudo sudo vim /var/www/html/DVWA/config/config.inc.php
 
         $_DVWA[ 'db_server' ]   = '127.0.0.1';
@@ -200,7 +200,7 @@ sudo rsync -avP /tmp/DVWA/ /var/www/html/DVWA
         ```
 - PHP配置
     - 修改```/etc/php/7.2/fpm/php.ini```
-        ```
+        ```bash
         vim /etc/php/7.2/fpm/php.ini
 
         # 修改
@@ -209,19 +209,19 @@ sudo rsync -avP /tmp/DVWA/ /var/www/html/DVWA
         display_errors = Off
         ```
     - 修改DVWA文件访问权限
-        ```
+        ```bash
         chown -R www-data.www-data /var/www/html/
         ```
 
 - Nginx配置
 
     - 为DVWA创建Nginx配置文件
-        ```
+        ```bash
         sudo vim /etc/nginx/sites-avaliable/dvwa
         ```
     - 参照/etc/nginx/sites-avaliable/default添加服务模块
 
-        ```
+        ```bash
         server {
             listen 8081;
             listen [::]:8081 ipv6only=on;
@@ -249,7 +249,7 @@ sudo rsync -avP /tmp/DVWA/ /var/www/html/DVWA
 
         ```
     - 创建软链接
-        ```
+        ```bash
         sudo ln -s /etc/nginx/sites-available/dvwa /etc/nginx/sites-enabled/
         ```
     - 重启nginx
