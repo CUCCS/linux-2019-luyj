@@ -25,7 +25,7 @@
         ```
     - 工作主机通过```ssh-copy-id```方式导入ssh-key
         ```bash
-        ssh-copy-id -i ~/.ssh/foo root@192.168.56.102
+        ssh-copy-id -i ~/foo root@192.168.56.102
         ```
 - #### 设置免密登录
     - 取消root口令并禁用口令登录
@@ -92,7 +92,94 @@
 - [ftp/video/Linux/2018/2018-04-24-2010-22-51.mp4](http://sec.cuc.edu.cn/ftp/video/Linux/2018/2018-04-24%2010-22-51.mp4)
 
 
-### 
+### NFS
+#### 实验文件
+- [nfs_c.sh](script/nfs_c.sh)
+- [nfs_s.sh](script/nfs_s.sh)
+- [exports](config/exports)
+#### 实验过程
+- 在通过工作主机运行脚本在目标主机安装vsftpd并完成相关配置
+    - 将```nfs_s.sh```拷贝到目标主机，工作主机运行```nfs_s.sh```脚本
+    ![](nfs_s.gif)
+    - 在工作主机运行```nfs_c.sh```脚本
+- 在1台Linux上配置NFS服务，另1台电脑上配置NFS客户端挂载2个权限不同的共享目录，分别对应只读访问和读写访问权限;
+    - 创建的两个目录分别为:只读--```/nfs/gen_r```和读写--```/nfs/gen_rw```
+![](nfs_1.PNG)
+    - 两个共享文件目录对应只读和读写访问权限
+    ![](nfs_rw.PNG)
+- 共享目录中文件、子目录的属主、权限信息
+![](nfs_gen.PNG)
+- 根据[资料](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-18-04)
+    > By default, NFS translates requests from a root user remotely into a non-privileged user on the server. This was intended as security feature to prevent a root account on the client from using the file system of the host as root. no_root_squash disables this behavior for certain shares.
+    - 添加两个/home下的共享目录，分别设置```no_root_squash```和不设置```no_root_squash```
+        - 对于设置了```no_root_squash```的共享目录
+        ![](nfs_nrs.PNG)   
+        - 没有设置过```no_root_squash```的共享目录，无法在工作机器(client)写入文件，创建目录
+        ![](nfs_rs.PNG)
+
+##### 参考资料
+- [how to set up an nfs mount on ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-18-04)   
+
+
+### DHCP
+#### 实验文件
+- [dhcp.sh](script/dhcp.sh)
+- [dhcpd.conf](config/dhcpd.sh)
+- [isc-dhcp-server](config/isc-dhcp-server)
+
+#### 实验过程
+- client [internal网卡]
+    ```bash
+    network:
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp0s3:
+        dhcp4: yes
+        enp0s8:
+        dhcp4: yes
+        enp0s9:
+        dhcp4: yes
+    ```
+- server [internal网卡]
+    ```bash
+    network:
+    version: 2
+    renderer: networkd
+    ethernets:
+        enp0s3:
+        dhcp4: yes
+        enp0s8:
+        dhcp4: yes
+        enp0s9:
+        # 必须静态配置
+        dhcp4: no
+        addresses: [192.168.57.1/24]
+    ```
+##### Server
+运行脚本
+##### Client
+- 在```/etc/01-netcfg.yaml```文件中添加```enp0s9```,设置```dhcp4: yes```
+- ```sudo netplan apply```使配置生效
+##### 实验结果
+![](dhcp_server.PNG)
+![](dhcp_client_1.PNG)
+![](dhcp_client_2.PNG)
+##### 参考资料
+- [configure-static-ip-addresses-on-ubuntu-18-04](https://websiteforstudents.com/configure-static-ip-addresses-on-ubuntu-18-04-beta/)
+- [isc-dhcp-server](https://help.ubuntu.com/community/isc-dhcp-server)
+
+### DNS
+
+##### 参考资料
+- [dns-install](https://help.ubuntu.com/lts/serverguide/dns-installation.html.en)
+
+
+
+
+
+
+
 
 
 
