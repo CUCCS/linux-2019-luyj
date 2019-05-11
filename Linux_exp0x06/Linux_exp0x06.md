@@ -128,33 +128,33 @@
 - [isc-dhcp-server](config/isc-dhcp-server)
 
 #### 实验过程
-- client [internal网卡]
+- client [intnet网卡]
     ```bash
     network:
     version: 2
     renderer: networkd
     ethernets:
         enp0s3:
-        dhcp4: yes
+            dhcp4: yes
         enp0s8:
-        dhcp4: yes
+            dhcp4: yes
         enp0s9:
-        dhcp4: yes
+            dhcp4: yes
     ```
-- server [internal网卡]
+- server [intnet网卡]
     ```bash
     network:
     version: 2
     renderer: networkd
     ethernets:
         enp0s3:
-        dhcp4: yes
+            dhcp4: yes
         enp0s8:
-        dhcp4: yes
+            dhcp4: yes
         enp0s9:
-        # 必须静态配置
-        dhcp4: no
-        addresses: [192.168.57.1/24]
+            # 必须静态配置
+            dhcp4: no
+            addresses: [192.168.57.1/24]
     ```
 ##### Server
 运行脚本
