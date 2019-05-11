@@ -124,7 +124,7 @@
 ### DHCP
 #### 实验文件
 - [dhcp.sh](script/dhcp.sh)
-- [dhcpd.conf](config/dhcpd.sh)
+- [dhcpd.conf](config/dhcpd.conf)
 - [isc-dhcp-server](config/isc-dhcp-server)
 
 #### 实验过程
@@ -169,10 +169,92 @@
 - [configure-static-ip-addresses-on-ubuntu-18-04](https://websiteforstudents.com/configure-static-ip-addresses-on-ubuntu-18-04-beta/)
 - [isc-dhcp-server](https://help.ubuntu.com/community/isc-dhcp-server)
 
-### DNS
+### DNS[手动配置]
+#### 实验文件
+- [client-head](config/head)
+- [server-named.conf.options](config/named.conf.options)
+- [server-named.conf.local](config/named.conf.local)
+- [server-db.cuc.edu.cn](config/db.cuc.edu.cn)
 
+#### 实验过程
+##### server
+- 安装```Bind```
+    ```bash
+    sudo apt-get install bind9
+    ```
+- 修改配置文件```options```
+    ```bash
+    sudo vim /etc/bind/named.conf.options
+    # 添加如下配置
+    listen-on { 192.168.57.1; };
+    allow-transfer { none; };
+    forwarders {
+        8.8.8.8;
+        8.8.4.4;
+    };
+    ```
+- 编辑配置文件```named.conf.local```
+    ```bash
+    sudo vim /etc/bind/named.conf.local
+
+    # 添加如下配置
+    zone "cuc.edu.cn" {
+        type master;
+        file "/etc/bind/db.cuc.edu.cn";
+    };
+    ```
+- 生成配置文件```db.cuc.edu.cn```
+    ```bash
+    sudo cp /etc/bind/db.local /etc/bind/db.cuc.edu.cn
+    ```
+- 编辑配置文件```db.cuc.edu.cn```
+    ```bash
+    ;
+    ; BIND data file for local loopback interface
+    ;
+    $TTL    604800
+    ;@      IN      SOA     localhost. root.localhost.(
+
+    @       IN      SOA     cuc.edu.cn. admin.cuc.edu.cn. (
+                                2         ; Serial
+                            604800         ; Refresh
+                            86400         ; Retry
+                            2419200         ; Expire
+                            604800 )       ; Negative Cache TTL
+    ;
+    ;@      IN      NS      localhost.
+            IN      NS      ns.cuc.edu.cn.
+    ns      IN      A       192.168.57.1
+    wp.sec.cuc.edu.cn.      IN      A       192.168.57.1
+    dvwa.sec.cuc.edu.cn.    IN      CNAME   wp.sec.cuc.edu.cn.
+    @       IN      AAAA    ::1
+
+    ```
+##### client
+- 安装```resolvconf```
+    ```bash
+    sudo apt-get update && sudo apt-get install resolvconf
+    ```
+- 修改配置文件
+    ```bash
+    sudo vim /etc/resolvconf/resolv.conf.d/head
+    # 增加配置
+    search cuc.edu.cn
+    nameserver 192.168.57.1
+
+    ```
+
+
+
+#### 实验结果
+![](dns_r1.PNG)
+![](dns_r2.PNG)
 ##### 参考资料
 - [dns-install](https://help.ubuntu.com/lts/serverguide/dns-installation.html.en)
+- [JuliBeacon](https://github.com/CUCCS/2015-linux-public-JuliBeacon/blob/614c2b31ca9306043bdd7fedd0d318cc9ed44e95/%E5%AE%9E%E9%AA%8C%206/%E5%AE%9E%E9%AA%8C6.md)
+- [dns-on-ubuntu-18.04](https://datawookie.netlify.com/blog/2018/10/dns-on-ubuntu-18.04/)
+
+### 
 
 
 
